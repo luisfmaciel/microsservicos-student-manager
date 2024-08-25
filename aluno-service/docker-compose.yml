@@ -1,0 +1,28 @@
+version: "3.0"
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  produto-service:
+    image: alunoservice
+    build:
+      context: ../aluno-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - eureka-net
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:
+    driver: local
+
+networks:
+  eureka-net:
